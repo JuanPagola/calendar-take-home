@@ -1,0 +1,70 @@
+.listingCard {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  width: 370px;
+  margin: 20px;
+  transition: all 0.3s ease;
+}
+
+.listingCard:hover {
+  transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+.infoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.price {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.newMatchTag {
+  background-color: #65ac2a;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.agent {
+  display: flex;
+  align-items: center;
+}
+
+.agent img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.icons {
+  display: flex;
+  gap: 10px;
+}
+
+.icon {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.favorite {
+  color: gold;
+}
