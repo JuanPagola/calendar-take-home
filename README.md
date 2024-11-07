@@ -1,32 +1,122 @@
-# Listing cards application
+# Component Documentation
 
-## PLEASE READ ALL THE INSTRUCTIONS CAREFULLY
+This document provides an overview of the `ListingCard`, `PhotoSection`, and `DetailsSection` components, detailing their props and usage. This documentation will help you understand the API of each component and how to integrate them effectively.
 
-## Instructions
+---
 
-You've joined the Infrastructures team, which is tasked on creating a set of reusable component for the company.
-Since there is no frontend team yet, you start from scratch:
-As initial step, you are provided with an endpoint `/api/saved-listings` which provides group of listings to display. 
-and an app which presents those cards on the page.
+## `ListingCard`
 
-you are also provided with a sketch for how a listing should be presented: ![Listing Card](./Listing%20Card.png)
-note that this design is old - it has some extra and some missing information.
+The `ListingCard` component displays information about a property listing, including photos, price, and details like address and number of bedrooms/bathrooms.
 
-Your goal, is to create a set of reusable components - "design system" style, and use them to make this app look nice.
+### Props
 
-### Requirements for production release
+| Prop   | Type          | Required | Description                                                                           |
+| ------ | ------------- | -------- | ------------------------------------------------------------------------------------- |
+| `info` | `ListingInfo` | Yes      | An object containing listing details, such as address, photos, price, and agent info. |
 
-1. We need to make the Listing Card to look like the design, presenting as much information as you can.
-2. We need to polish the page to look nice
-2. In that process, create at least 3 reusable components (e.g. for image / person display)
-3. List what unit tests you will write to cover your reusable components. (can be a comment on the source file)
-4. You should add error handling in the application because our API sometimes returns errors.
-5. You need to test the application for launch and make sure it's bug free.
-6. BONUS: write a page which documents your components and their API.
+### Usage
 
-### Things to note for the take home
+```javascript
+import { ListingCard } from "./components/ListingCard";
+import { ListingInfo } from "./utils/Types";
 
-- For a successful assessment, you do not need to do anything more than meet the listed requirements. Where a requirement is ambiguous, please choose any working solution to it and be prepared to tell us why you chose that solution.
-- Please do not add any new packages, scripts, or other external dependencies to this project.
-- We've built a tiny mock data server in `api-plugin`. On occasion, this server will respond with errors. Please don't try to fix the server. Instead, update the application to handle the errors.
-- Please provide your solution as an email attachment (but please don't include the `node_modules` folder). You can use the included `zip-it.sh` script to compress the files into a tar.gz archive.
+const listingData: ListingInfo = {
+  address: "123 Main St",
+  city: "Los Angeles",
+  state: "CA",
+  zipCode: "90001",
+  bedrooms: 3,
+  bathrooms: 2,
+  price: 750000,
+  agent: { firstName: "John", lastName: "Doe", id: 1 },
+  photos: ["https://example.com/photo1.jpg"],
+  isFavorite: true,
+};
+
+<ListingCard info={listingData} />;
+```
+
+### Behavior
+
+- Displays the price in a formatted currency style.
+- Shows a filled star icon if `isFavorite` is `true`; otherwise, it shows an empty star icon.
+- Integrates `PhotoSection` and `DetailsSection` to display the listing's photos, agent info, address, and specs.
+
+---
+
+## `PhotoSection`
+
+The `PhotoSection` component displays the main photo of the property listing, as well as agent information and a share icon.
+
+### Props
+
+| Prop     | Type       | Required | Description                                                                  |
+| -------- | ---------- | -------- | ---------------------------------------------------------------------------- |
+| `agent`  | `Person`   | No       | Information about the listing agent, including `firstName` and `lastName`.   |
+| `photos` | `string[]` | No       | An array of photo URLs. If empty or undefined, a placeholder image is shown. |
+
+### Usage
+
+```javascript
+import PhotoSection from "./components/PhotoSection";
+import { Person } from "./utils/Types";
+
+const agentData: Person = {
+  firstName: "John",
+  lastName: "Doe",
+  id: 1,
+};
+
+<PhotoSection agent={agentData} photos={["https://example.com/photo.jpg"]} />;
+```
+
+### Behavior
+
+- Displays the first image from `photos`, or a "No Image Available" placeholder if `photos` is empty.
+- Shows the agent's name in the format "Listing courtesy of [firstName] [lastName]".
+- Includes a share icon in the top-right corner.
+
+---
+
+## `DetailsSection`
+
+The `DetailsSection` component provides information about the listing’s address, number of bedrooms, and number of bathrooms.
+
+### Props
+
+| Prop        | Type     | Required | Description                         |
+| ----------- | -------- | -------- | ----------------------------------- |
+| `address`   | `string` | No       | The street address of the listing.  |
+| `city`      | `string` | No       | The city of the listing.            |
+| `state`     | `string` | No       | The state of the listing.           |
+| `zipCode`   | `string` | No       | The zip code of the listing.        |
+| `bedrooms`  | `number` | No       | Number of bedrooms in the listing.  |
+| `bathrooms` | `number` | No       | Number of bathrooms in the listing. |
+
+### Usage
+
+```javascript
+import DetailsSection from "./components/DetailsSection";
+
+<DetailsSection
+  address="123 Main St"
+  city="Los Angeles"
+  state="CA"
+  zipCode="90001"
+  bedrooms={3}
+  bathrooms={2}
+/>;
+```
+
+### Behavior
+
+- Displays the number of bedrooms and bathrooms in the format "X beds | Y bath".
+- Shows the address in the format `[address], [city], [state] [zipCode]`.
+- Omits fields if they are not provided, gracefully handling missing data.
+
+---
+
+### Notes
+
+- All components are styled using CSS modules in `styles.module.css`.
+- Icons used in `ListingCard` and `PhotoSection` are imported from `../../utils/Icons`.
